@@ -1,4 +1,20 @@
+import { useState } from "react";
+
 function InputPanel() {
+  // --- Local State ---
+  const [userMessage, setUserMessage] = useState("");
+  const [selectedPersona, setSelectedPersona] = useState("");
+  const [selectedIndustry, setSelectedIndustry] = useState("");
+  const [selectedLevel, setSelectedLevel] = useState("");
+
+  // --- Handle Submit (for now, just logs all inputs) ---
+  function handleSubmit() {
+    console.log("Message:", userMessage);
+    console.log("Persona:", selectedPersona);
+    console.log("Level:", selectedLevel);
+    console.log("Industry:", selectedIndustry);
+  }
+
   return (
     <div>
       {/* Main Heading */}
@@ -15,6 +31,8 @@ function InputPanel() {
           marginTop: "10px",
           width: "100%",
         }}
+        value={userMessage}
+        onChange={(e) => setUserMessage(e.target.value)}
       />
 
       {/* Target Persona Dropdown */}
@@ -24,6 +42,8 @@ function InputPanel() {
           id="persona"
           name="persona"
           style={{ padding: "8px", fontSize: "16px", marginLeft: "10px" }}
+          value={selectedPersona}
+          onChange={(e) => setSelectedPersona(e.target.value)}
         >
           <option value="">Select Persona</option>
           <option value="Human Resources">Human Resources</option>
@@ -39,6 +59,17 @@ function InputPanel() {
           <option value="Executive Leadership">Executive Leadership</option>
           <option value="Other">Other (Specify)</option>
         </select>
+
+        {/* Show Custom Persona Input if "Other" Selected */}
+        {selectedPersona === "Other" && (
+          <div style={{ marginTop: "10px" }}>
+            <input
+              type="text"
+              placeholder="Enter Custom Persona"
+              style={{ padding: "8px", fontSize: "16px", width: "60%" }}
+            />
+          </div>
+        )}
       </div>
 
       {/* Target Level Dropdown */}
@@ -48,6 +79,8 @@ function InputPanel() {
           id="level"
           name="level"
           style={{ padding: "8px", fontSize: "16px", marginLeft: "10px" }}
+          value={selectedLevel}
+          onChange={(e) => setSelectedLevel(e.target.value)}
         >
           <option value="">Select Level</option>
           <option value="Individual Contributor">
@@ -59,6 +92,7 @@ function InputPanel() {
           <option value="C-Suite Executive">C-Suite Executive</option>
         </select>
       </div>
+
       {/* Target Industry Dropdown */}
       <div style={{ marginTop: "20px" }}>
         <label htmlFor="industry">Target Industry: </label>
@@ -66,6 +100,8 @@ function InputPanel() {
           id="industry"
           name="industry"
           style={{ padding: "8px", fontSize: "16px", marginLeft: "10px" }}
+          value={selectedIndustry}
+          onChange={(e) => setSelectedIndustry(e.target.value)}
         >
           <option value="">Select Industry</option>
           <option value="Cybersecurity">Cybersecurity</option>
@@ -81,9 +117,36 @@ function InputPanel() {
           <option value="Retail">Retail</option>
           <option value="Other">Other (Specify)</option>
         </select>
+
+        {/* Show Custom Industry Input if "Other" Selected */}
+        {selectedIndustry === "Other" && (
+          <div style={{ marginTop: "10px" }}>
+            <input
+              type="text"
+              placeholder="Enter Custom Industry"
+              style={{ padding: "8px", fontSize: "16px", width: "60%" }}
+            />
+          </div>
+        )}
       </div>
 
-      {/* Final Div */}
+      {/* Score My Message Button */}
+      <div style={{ marginTop: "40px" }}>
+        <button
+          onClick={handleSubmit}
+          style={{
+            padding: "12px 20px",
+            fontSize: "18px",
+            backgroundColor: "#f35b66", // Boxing glove red
+            color: "white",
+            border: "none",
+            borderRadius: "8px",
+            cursor: "pointer",
+          }}
+        >
+          Score My Message
+        </button>
+      </div>
     </div>
   );
 }
