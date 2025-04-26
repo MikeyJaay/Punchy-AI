@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { getPunchyScores } from "../openai";
 
 function InputPanel() {
   // --- Local State ---
@@ -6,9 +7,10 @@ function InputPanel() {
   const [selectedPersona, setSelectedPersona] = useState("");
   const [selectedIndustry, setSelectedIndustry] = useState("");
   const [selectedLevel, setSelectedLevel] = useState("");
+  const [aiResult, setAiResult] = useState("");
 
-  // --- Handle Submit (for now, just logs all inputs) ---
-  function handleSubmit() {
+  // --- Handle Submit (async: sends prompt to OpenAI) ---
+  async function handleSubmit() {
     console.log("Message:", userMessage);
     console.log("Persona:", selectedPersona);
     console.log("Level:", selectedLevel);
@@ -22,24 +24,21 @@ function InputPanel() {
     });
 
     console.log("Built Prompt:", prompt);
+
+    try {
+      const aiResponse = await getPunchyScores(prompt);
+      console.log("AI Response:", aiResponse);
+      setAiResult(aiResponse);
+    } catch (error) {
+      console.error("Error fetching AI scores:", error);
+    }
   }
 
   // --- Build GPT Prompt ---
   function buildPrompt({ message, persona, level, industry }) {
-    let personaText = persona;
-    let levelText = level;
-    let industryText = industry;
-
-    // Fallbacks if user leaves fields blank
-    if (!personaText) {
-      personaText = "a general professional audience";
-    }
-    if (!levelText) {
-      levelText = "a general seniority level";
-    }
-    if (!industryText) {
-      industryText = "a general industry";
-    }
+    let personaText = persona || "a general professional audience";
+    let levelText = level || "a general seniority level";
+    let industryText = industry || "a general industry";
 
     return `
   You are a senior product marketer specializing in messaging optimization.
@@ -134,9 +133,7 @@ function InputPanel() {
           onChange={(e) => setSelectedLevel(e.target.value)}
         >
           <option value="">Select Level</option>
-          <option value="Individual Contributor">
-            Individual Contributor (IC)
-          </option>
+          <option value="Individual Contributor">Individual Contributor (IC)</option>
           <option value="Manager">Manager</option>
           <option value="Director">Director</option>
           <option value="Vice President">Vice President (VP)</option>
@@ -198,6 +195,21 @@ function InputPanel() {
           Score My Message
         </button>
       </div>
+
+      {/* Display GPT Output */}
+      {aiResult && (
+        <div
+          style={{
+            marginTop: "40px",
+            padding: "20px",
+            border: "1px solid #ccc",
+            borderRadius: "8px",
+          }}
+        >
+          <h3>✍️ Punchy AI Feedback:</h3>
+          <p style={{ whiteSpace: "pre-line" }}>{aiResult}</p>
+        </div>
+      )}
     </div>
   );
 }
