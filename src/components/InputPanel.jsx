@@ -13,6 +13,57 @@ function InputPanel() {
     console.log("Persona:", selectedPersona);
     console.log("Level:", selectedLevel);
     console.log("Industry:", selectedIndustry);
+
+    const prompt = buildPrompt({
+      message: userMessage,
+      persona: selectedPersona,
+      level: selectedLevel,
+      industry: selectedIndustry,
+    });
+
+    console.log("Built Prompt:", prompt);
+  }
+
+  // --- Build GPT Prompt ---
+  function buildPrompt({ message, persona, level, industry }) {
+    let personaText = persona;
+    let levelText = level;
+    let industryText = industry;
+
+    // Fallbacks if user leaves fields blank
+    if (!personaText) {
+      personaText = "a general professional audience";
+    }
+    if (!levelText) {
+      levelText = "a general seniority level";
+    }
+    if (!industryText) {
+      industryText = "a general industry";
+    }
+
+    return `
+  You are a senior product marketer specializing in messaging optimization.
+  
+  Analyze the following piece of product messaging for:
+  - Clarity
+  - Emotional relevance
+  - Buzzword density
+  - Persona fit
+  
+  Target Audience:
+  - Persona: ${personaText}
+  - Level: ${levelText}
+  - Industry: ${industryText}
+  
+  Then:
+  - Score each category from 1–10
+  - Explain why each score was given
+  - Provide a rewrite suggestion that improves the lowest-scoring category
+  
+  Here is the message to evaluate:
+  
+  "${message}"
+    `.trim();
   }
 
   return (
