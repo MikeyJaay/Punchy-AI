@@ -125,6 +125,7 @@ Here is the message to evaluate:
   }
 
   return (
+    <div className={styles.pageBackground}>
     <div className={styles.container}>
       {/* Main Heading */}
       <h2 className={styles.heading}>Paste Your Message Below 👇</h2>
@@ -294,6 +295,7 @@ Here is the message to evaluate:
           )}
         </div>
       )}
+    </div>
     </div>
   );
 }

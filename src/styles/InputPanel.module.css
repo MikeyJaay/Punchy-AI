@@ -1,51 +1,16 @@
-.formContainer {
-    margin-top: 40px;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-  }
-  
-  .textarea {
-    padding: 10px;
-    font-size: 16px;
-    width: 100%;
-    margin-top: 10px;
-  }
-
-  .button {
-    padding: 12px 20px;
-    font-size: 18px;
-    background-color: #f35b66;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .button:hover {
-    background-color: #ff6b77; /* lighter boxing glove red */
-  }
-  
-  .smallButton {
-    padding: 8px 16px;
-    font-size: 14px;
-    background-color: #f35b66;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .smallButton:hover {
-    background-color: #ff6b77;
+.pageBackground {
+    background-color: #f9f9f9;
+    min-height: 100vh;
+    padding: 40px 20px;
   }
   
   .container {
     max-width: 800px;
     margin: 0 auto;
-    padding: 40px 20px;
+    background-color: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.05);
     font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
     color: #333;
   }
@@ -71,6 +36,37 @@
     margin-top: 8px;
     border: 1px solid #ddd;
     border-radius: 6px;
+  }
+  
+  .button {
+    padding: 12px 20px;
+    font-size: 18px;
+    background-color: #e14b57; /* slightly darker boxing glove red */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transform: scale(1.02);
+    transition: all 0.2s ease;
+  }
+  
+  .button:hover {
+    background-color: #ff6b77; /* lighter boxing glove red */
+  }
+  
+  .smallButton {
+    padding: 8px 16px;
+    font-size: 14px;
+    background-color: #f35b66;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .smallButton:hover {
+    background-color: #ff6b77;
   }
   
   .outputCard {
