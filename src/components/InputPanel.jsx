@@ -9,7 +9,10 @@ function InputPanel() {
   const [selectedLevel, setSelectedLevel] = useState("");
   const [aiResult, setAiResult] = useState("");
 
-  // --- Handle Submit (async: sends prompt to OpenAI) ---
+    // --- Parse the current aiResult ---
+    const { scores, rewrite } = parseScores(aiResult);  // << ADD THIS HERE!
+
+  // --- Handle Submit (simulate GPT response for now) ---
   async function handleSubmit() {
     console.log("Message:", userMessage);
     console.log("Persona:", selectedPersona);
@@ -25,13 +28,39 @@ function InputPanel() {
 
     console.log("Built Prompt:", prompt);
 
-    try {
-      const aiResponse = await getPunchyScores(prompt);
-      console.log("AI Response:", aiResponse);
-      setAiResult(aiResponse);
-    } catch (error) {
-      console.error("Error fetching AI scores:", error);
+    // --- FAKE AI RESPONSE (temporary) ---
+    const fakeAiResponse = `
+Clarity: 8/10
+Emotional Relevance: 7/10
+Buzzword Density: 3/10
+Persona Fit: 9/10
+
+Suggested Rewrite:
+"Cut through the noise. Discover complete asset visibility, fast."
+    `.trim();
+
+    setAiResult(fakeAiResponse);
+  }
+
+  // --- Parse AI Result into Scores and Rewrite ---
+  function parseScores(aiResult) {
+    if (!aiResult) return { scores: [], rewrite: "" };
+
+    const lines = aiResult.split("\n").map((line) => line.trim());
+    const scores = [];
+    let rewrite = "";
+
+    for (const line of lines) {
+      if (line.includes(":") && line.includes("/10")) {
+        const [category, score] = line.split(":");
+        scores.push({ category: category.trim(), score: score.trim() });
+      }
+      if (line.startsWith('"') || line.startsWith("'")) {
+        rewrite = line.replace(/['"]+/g, ""); // remove quotes
+      }
     }
+
+    return { scores, rewrite };
   }
 
   // --- Build GPT Prompt ---
@@ -41,29 +70,31 @@ function InputPanel() {
     let industryText = industry || "a general industry";
 
     return `
-  You are a senior product marketer specializing in messaging optimization.
-  
-  Analyze the following piece of product messaging for:
-  - Clarity
-  - Emotional relevance
-  - Buzzword density
-  - Persona fit
-  
-  Target Audience:
-  - Persona: ${personaText}
-  - Level: ${levelText}
-  - Industry: ${industryText}
-  
-  Then:
-  - Score each category from 1–10
-  - Explain why each score was given
-  - Provide a rewrite suggestion that improves the lowest-scoring category
-  
-  Here is the message to evaluate:
-  
-  "${message}"
+You are a senior product marketer specializing in messaging optimization.
+
+Analyze the following piece of product messaging for:
+- Clarity
+- Emotional relevance
+- Buzzword density
+- Persona fit
+
+Target Audience:
+- Persona: ${personaText}
+- Level: ${levelText}
+- Industry: ${industryText}
+
+Then:
+- Score each category from 1–10
+- Explain why each score was given
+- Provide a rewrite suggestion that improves the lowest-scoring category
+
+Here is the message to evaluate:
+
+"${message}"
     `.trim();
   }
+
+
 
   return (
     <div>
@@ -109,17 +140,6 @@ function InputPanel() {
           <option value="Executive Leadership">Executive Leadership</option>
           <option value="Other">Other (Specify)</option>
         </select>
-
-        {/* Show Custom Persona Input if "Other" Selected */}
-        {selectedPersona === "Other" && (
-          <div style={{ marginTop: "10px" }}>
-            <input
-              type="text"
-              placeholder="Enter Custom Persona"
-              style={{ padding: "8px", fontSize: "16px", width: "60%" }}
-            />
-          </div>
-        )}
       </div>
 
       {/* Target Level Dropdown */}
@@ -165,17 +185,6 @@ function InputPanel() {
           <option value="Retail">Retail</option>
           <option value="Other">Other (Specify)</option>
         </select>
-
-        {/* Show Custom Industry Input if "Other" Selected */}
-        {selectedIndustry === "Other" && (
-          <div style={{ marginTop: "10px" }}>
-            <input
-              type="text"
-              placeholder="Enter Custom Industry"
-              style={{ padding: "8px", fontSize: "16px", width: "60%" }}
-            />
-          </div>
-        )}
       </div>
 
       {/* Score My Message Button */}
@@ -185,7 +194,7 @@ function InputPanel() {
           style={{
             padding: "12px 20px",
             fontSize: "18px",
-            backgroundColor: "#f35b66", // Boxing glove red
+            backgroundColor: "#f35b66",
             color: "white",
             border: "none",
             borderRadius: "8px",
@@ -206,8 +215,33 @@ function InputPanel() {
             borderRadius: "8px",
           }}
         >
-          <h3>✍️ Punchy AI Feedback:</h3>
-          <p style={{ whiteSpace: "pre-line" }}>{aiResult}</p>
+          {/* --- GPT SCORES SECTION --- */}
+          <h3>📈 Your Message Scores:</h3>
+          <ul style={{ listStyleType: "none", paddingLeft: 0 }}>
+            {scores.map((item, index) => (
+              <li key={index}>
+                <strong>{item.category}:</strong> {item.score}
+              </li>
+            ))}
+          </ul>
+
+          {/* --- GPT REWRITE SECTION --- */}
+          {rewrite && (
+            <>
+              <h3 style={{ marginTop: "30px" }}>✍️ Suggested Rewrite:</h3>
+              <div
+                style={{
+                  backgroundColor: "#f5f5f5",
+                  padding: "15px",
+                  borderRadius: "8px",
+                  marginTop: "10px",
+                  fontSize: "16px",
+                }}
+              >
+                {rewrite}
+              </div>
+            </>
+          )}
         </div>
       )}
     </div>
