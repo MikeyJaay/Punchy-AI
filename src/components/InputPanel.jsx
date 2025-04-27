@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "../styles/spinner.css";
 import { getPunchyScores } from "../openai";
 
 function InputPanel() {
@@ -8,9 +9,10 @@ function InputPanel() {
   const [selectedIndustry, setSelectedIndustry] = useState("");
   const [selectedLevel, setSelectedLevel] = useState("");
   const [aiResult, setAiResult] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-    // --- Parse the current aiResult ---
-    const { scores, rewrite } = parseScores(aiResult);  // << ADD THIS HERE!
+  // --- Parse the current aiResult ---
+  const { scores, rewrite } = parseScores(aiResult); // << ADD THIS HERE!
 
   // --- Handle Submit (simulate GPT response for now) ---
   async function handleSubmit() {
@@ -28,8 +30,11 @@ function InputPanel() {
 
     console.log("Built Prompt:", prompt);
 
-    // --- FAKE AI RESPONSE (temporary) ---
-    const fakeAiResponse = `
+    setIsLoading(true); // Start loading!
+
+    setTimeout(() => {
+      // --- FAKE AI RESPONSE (temporary) ---
+      const fakeAiResponse = `
 Clarity: 8/10
 Emotional Relevance: 7/10
 Buzzword Density: 3/10
@@ -39,7 +44,9 @@ Suggested Rewrite:
 "Cut through the noise. Discover complete asset visibility, fast."
     `.trim();
 
-    setAiResult(fakeAiResponse);
+      setAiResult(fakeAiResponse);
+      setIsLoading(false); // Stop loading once fake data is "ready"
+    }, 2000); // 2 second fake loading
   }
 
   // --- Parse AI Result into Scores and Rewrite ---
@@ -93,8 +100,6 @@ Here is the message to evaluate:
 "${message}"
     `.trim();
   }
-
-
 
   return (
     <div>
@@ -153,7 +158,9 @@ Here is the message to evaluate:
           onChange={(e) => setSelectedLevel(e.target.value)}
         >
           <option value="">Select Level</option>
-          <option value="Individual Contributor">Individual Contributor (IC)</option>
+          <option value="Individual Contributor">
+            Individual Contributor (IC)
+          </option>
           <option value="Manager">Manager</option>
           <option value="Director">Director</option>
           <option value="Vice President">Vice President (VP)</option>
@@ -198,12 +205,33 @@ Here is the message to evaluate:
             color: "white",
             border: "none",
             borderRadius: "8px",
-            cursor: "pointer",
+            cursor: isLoading ? "not-allowed" : "pointer",
           }}
         >
-          Score My Message
+          {isLoading ? "Scoring..." : "Score My Message"}
         </button>
       </div>
+      {isLoading && (
+        <div
+          style={{
+            marginTop: "40px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <div
+            style={{
+              width: "40px",
+              height: "40px",
+              border: "4px solid #ccc",
+              borderTop: "4px solid #f35b66", // boxing glove red
+              borderRadius: "50%",
+              animation: "spin 1s linear infinite",
+            }}
+          />
+        </div>
+      )}
 
       {/* Display GPT Output */}
       {aiResult && (
