@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "../styles/spinner.css";
+import styles from "../styles/InputPanel.module.css";
 import { getPunchyScores } from "../openai";
 
 function InputPanel() {
@@ -47,6 +48,28 @@ Suggested Rewrite:
       setAiResult(fakeAiResponse);
       setIsLoading(false); // Stop loading once fake data is "ready"
     }, 2000); // 2 second fake loading
+  }
+  // --- Handle Reset Form ---
+  function handleReset() {
+    setUserMessage("");
+    setSelectedPersona("");
+    setSelectedIndustry("");
+    setSelectedLevel("");
+    setAiResult("");
+    setIsLoading(false);
+  }
+  // --- Handle Copy to Clipboard ---
+  function handleCopy() {
+    if (rewrite) {
+      navigator.clipboard
+        .writeText(rewrite)
+        .then(() => {
+          alert("✂️ Suggested Rewrite copied to clipboard!");
+        })
+        .catch((err) => {
+          console.error("Failed to copy text: ", err);
+        });
+    }
   }
 
   // --- Parse AI Result into Scores and Rewrite ---
@@ -102,32 +125,29 @@ Here is the message to evaluate:
   }
 
   return (
-    <div>
+    <div className={styles.pageBackground}>
+    <div className={styles.container}>
       {/* Main Heading */}
-      <h2>Paste Your Message Below 👇</h2>
+      <h2 className={styles.heading}>Paste Your Message Below 👇</h2>
 
       {/* Message Textarea */}
       <textarea
-        placeholder="Paste your headline, email, website copy, or pitch here..."
-        rows="8"
-        cols="60"
-        style={{
-          padding: "10px",
-          fontSize: "16px",
-          marginTop: "10px",
-          width: "100%",
-        }}
+        className={styles.textarea}
+        placeholder="Paste your headline here..."
         value={userMessage}
         onChange={(e) => setUserMessage(e.target.value)}
       />
 
       {/* Target Persona Dropdown */}
       <div style={{ marginTop: "20px" }}>
-        <label htmlFor="persona">Target Persona: </label>
+        <label htmlFor="persona" className={styles.label}>
+          Target Persona:
+        </label>
+
         <select
           id="persona"
           name="persona"
-          style={{ padding: "8px", fontSize: "16px", marginLeft: "10px" }}
+          className={styles.select}
           value={selectedPersona}
           onChange={(e) => setSelectedPersona(e.target.value)}
         >
@@ -149,11 +169,14 @@ Here is the message to evaluate:
 
       {/* Target Level Dropdown */}
       <div style={{ marginTop: "20px" }}>
-        <label htmlFor="level">Target Level: </label>
+        <label htmlFor="level" className={styles.label}>
+          Target Level:
+        </label>
+
         <select
           id="level"
           name="level"
-          style={{ padding: "8px", fontSize: "16px", marginLeft: "10px" }}
+          className={styles.select}
           value={selectedLevel}
           onChange={(e) => setSelectedLevel(e.target.value)}
         >
@@ -170,11 +193,14 @@ Here is the message to evaluate:
 
       {/* Target Industry Dropdown */}
       <div style={{ marginTop: "20px" }}>
-        <label htmlFor="industry">Target Industry: </label>
+        <label htmlFor="industry" className={styles.label}>
+          Target Industry:
+        </label>
+
         <select
           id="industry"
           name="industry"
-          style={{ padding: "8px", fontSize: "16px", marginLeft: "10px" }}
+          className={styles.select}
           value={selectedIndustry}
           onChange={(e) => setSelectedIndustry(e.target.value)}
         >
@@ -198,17 +224,18 @@ Here is the message to evaluate:
       <div style={{ marginTop: "40px" }}>
         <button
           onClick={handleSubmit}
-          style={{
-            padding: "12px 20px",
-            fontSize: "18px",
-            backgroundColor: "#f35b66",
-            color: "white",
-            border: "none",
-            borderRadius: "8px",
-            cursor: isLoading ? "not-allowed" : "pointer",
-          }}
+          className={styles.button}
+          disabled={isLoading}
         >
           {isLoading ? "Scoring..." : "Score My Message"}
+        </button>
+
+        <button
+          onClick={handleReset}
+          className={styles.smallButton}
+          style={{ marginLeft: "10px" }}
+        >
+          Reset
         </button>
       </div>
       {isLoading && (
@@ -235,14 +262,7 @@ Here is the message to evaluate:
 
       {/* Display GPT Output */}
       {aiResult && (
-        <div
-          style={{
-            marginTop: "40px",
-            padding: "20px",
-            border: "1px solid #ccc",
-            borderRadius: "8px",
-          }}
-        >
+        <div className={styles.outputCard}>
           {/* --- GPT SCORES SECTION --- */}
           <h3>📈 Your Message Scores:</h3>
           <ul style={{ listStyleType: "none", paddingLeft: 0 }}>
@@ -268,10 +288,14 @@ Here is the message to evaluate:
               >
                 {rewrite}
               </div>
+              <button onClick={handleCopy} className={styles.smallButton}>
+                Copy Rewrite
+              </button>
             </>
           )}
         </div>
       )}
+    </div>
     </div>
   );
 }
