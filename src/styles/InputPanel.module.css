@@ -11,4 +11,73 @@
     width: 100%;
     margin-top: 10px;
   }
+
+  .button {
+    padding: 12px 20px;
+    font-size: 18px;
+    background-color: #f35b66;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .button:hover {
+    background-color: #ff6b77; /* lighter boxing glove red */
+  }
+  
+  .smallButton {
+    padding: 8px 16px;
+    font-size: 14px;
+    background-color: #f35b66;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .smallButton:hover {
+    background-color: #ff6b77;
+  }
+  
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    color: #333;
+  }
+  
+  .heading {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .label {
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: inline-block;
+  }
+  
+  .select,
+  .textarea {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    margin-top: 8px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+  }
+  
+  .outputCard {
+    margin-top: 40px;
+    padding: 20px;
+    background-color: #fafafa;
+    border: 1px solid #eee;
+    border-radius: 10px;
+  }
   
