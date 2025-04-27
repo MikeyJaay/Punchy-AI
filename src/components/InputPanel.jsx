@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "../styles/spinner.css";
+import styles from "../styles/InputPanel.module.css";
 import { getPunchyScores } from "../openai";
 
 function InputPanel() {
@@ -108,15 +109,8 @@ Here is the message to evaluate:
 
       {/* Message Textarea */}
       <textarea
-        placeholder="Paste your headline, email, website copy, or pitch here..."
-        rows="8"
-        cols="60"
-        style={{
-          padding: "10px",
-          fontSize: "16px",
-          marginTop: "10px",
-          width: "100%",
-        }}
+        className={styles.textarea}
+        placeholder="Paste your headline here..."
         value={userMessage}
         onChange={(e) => setUserMessage(e.target.value)}
       />
