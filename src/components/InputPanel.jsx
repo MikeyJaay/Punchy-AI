@@ -49,6 +49,15 @@ Suggested Rewrite:
       setIsLoading(false); // Stop loading once fake data is "ready"
     }, 2000); // 2 second fake loading
   }
+  // --- Handle Reset Form ---
+  function handleReset() {
+    setUserMessage("");
+    setSelectedPersona("");
+    setSelectedIndustry("");
+    setSelectedLevel("");
+    setAiResult("");
+    setIsLoading(false);
+  }
 
   // --- Parse AI Result into Scores and Rewrite ---
   function parseScores(aiResult) {
@@ -203,6 +212,21 @@ Here is the message to evaluate:
           }}
         >
           {isLoading ? "Scoring..." : "Score My Message"}
+        </button>
+        <button
+          onClick={handleReset}
+          style={{
+            padding: "12px 20px",
+            fontSize: "18px",
+            backgroundColor: "#ccc",
+            color: "black",
+            border: "none",
+            borderRadius: "8px",
+            marginLeft: "10px",
+            cursor: isLoading ? "not-allowed" : "pointer",
+          }}
+        >
+          Reset Form
         </button>
       </div>
       {isLoading && (
