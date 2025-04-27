@@ -1,147 +1,132 @@
 .pageBackground {
-    background-color: #f9f9f9;
-    min-height: 100vh;
-    padding-bottom: 150px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .chatContainer {
-    padding: 20px;
-    margin-bottom: 120px;
-    width: 100%;
-    max-width: 800px;
-  }
-  
-  .outputCard {
-    background: #ffffff;
-    color: #222;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 12px;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
-    animation: fadeIn 0.5s ease;
-  }
-  
-  .rewriteBox {
-    background-color: #f5f5f5;
-    padding: 15px;
-    border-radius: 8px;
-    margin-top: 10px;
-    font-size: 16px;
-    color: #222;
-  }
-  
-  .inputBar {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: white;
-    padding: 20px;
-    border-top: 1px solid #eee;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .inputWrapper {
-    width: 100%;
-    max-width: 700px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .inputField {
-    padding: 12px;
-    font-size: 16px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    width: 100%;
-    background-color: #fff;
-    color: #222;
-  }
-  
-  .scoreButton {
-    background-color: #f35b66;
-    color: white;
-    font-size: 18px;
-    border: none;
-    border-radius: 8px;
-    padding: 12px;
-    width: 100%;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-  }
-  
-  .scoreButton:hover {
-    background-color: #ff6b77;
-  }
-  
-  .filters {
-    width: 100%;
-    display: flex;
-    gap: 8px;
-    margin-top: 8px;
-    flex-wrap: wrap;
-  }
-  
-  .select {
-    flex: 1;
-    padding: 10px;
-    font-size: 14px;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-    background-color: #fafafa;
-    color: #333;
-  }
-  
-  .resetButton {
-    padding: 10px 16px;
-    background-color: #ddd;
-    color: #555;
-    font-size: 14px;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-  }
-  
-  .resetButton:hover {
-    background-color: #bbb;
-  }
-  
-  .spinnerContainer {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-  }
-  
-  .spinner {
-    width: 40px;
-    height: 40px;
-    border: 4px solid #ccc;
-    border-top: 4px solid #f35b66;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-  }
-  
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-  
-  @keyframes fadeIn {
-    0% { opacity: 0; transform: translateY(10px); }
-    100% { opacity: 1; transform: translateY(0); }
-  }
-  
-  /* RESPONSIVE */
-  @media (max-width: 768px) {
-    .inputWrapper {
-      max-width: 95%;
-    }
-  }
-  
+  background-color: #f7f7f7;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.contentArea {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px;
+}
+
+.leftSide {
+  flex: 1;
+  padding-right: 30px;
+}
+
+.rightSide {
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.rewriteBox {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.copyButton {
+  margin-top: 15px;
+  background-color: #f35b66;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.copyButton:hover {
+  background-color: #ff6b77;
+}
+
+.scoreBox {
+  background: white;
+  border-radius: 12px;
+  padding: 15px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.categoryText {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.scoreValue {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.bottomBar {
+  background: #ffffff;
+  padding: 20px;
+  box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.05);
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+.inputArea {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  resize: none;
+  margin-bottom: 20px;
+}
+
+.dropdownRow {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.dropdownRow select {
+  flex: 1;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.buttonRow {
+  display: flex;
+  gap: 10px;
+}
+
+.scoreButton {
+  background-color: #f35b66;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.scoreButton:hover {
+  background-color: #ff6b77;
+}
+
+.resetButton {
+  background-color: #e0e0e0;
+  color: #333;
+  border: none;
+  padding: 12px 24px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.resetButton:hover {
+  background-color: #ccc;
+}
