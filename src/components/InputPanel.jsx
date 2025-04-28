@@ -1,7 +1,5 @@
 import { useState } from "react";
-import "../styles/spinner.css";
 import styles from "../styles/InputPanel.module.css";
-import { getPunchyScores } from "../openai";
 
 function InputPanel() {
   const [userMessage, setUserMessage] = useState("");
@@ -14,13 +12,7 @@ function InputPanel() {
   const { scores, rewrite } = parseScores(aiResult);
 
   async function handleSubmit() {
-    const prompt = buildPrompt({
-      message: userMessage,
-      persona: selectedPersona,
-      level: selectedLevel,
-      industry: selectedIndustry,
-    });
-
+    if (!userMessage.trim()) return;
     setIsLoading(true);
 
     setTimeout(() => {
@@ -36,7 +28,7 @@ Suggested Rewrite:
 
       setAiResult(fakeAiResponse);
       setIsLoading(false);
-    }, 2000);
+    }, 1500);
   }
 
   function handleReset() {
@@ -76,89 +68,63 @@ Suggested Rewrite:
     return { scores, rewrite };
   }
 
-  function buildPrompt({ message, persona, level, industry }) {
-    let personaText = persona || "a general professional audience";
-    let levelText = level || "a general seniority level";
-    let industryText = industry || "a general industry";
-
-    return `
-You are a senior product marketer specializing in messaging optimization.
-
-Analyze the following piece of product messaging for:
-- Clarity
-- Emotional relevance
-- Buzzword density
-- Persona fit
-
-Target Audience:
-- Persona: ${personaText}
-- Level: ${levelText}
-- Industry: ${industryText}
-
-Then:
-- Score each category from 1–10
-- Explain why each score was given
-- Provide a rewrite suggestion that improves the lowest-scoring category
-
-Here is the message to evaluate:
-
-"${message}"
-    `.trim();
-  }
-
   function getScoreColor(score) {
     const num = parseInt(score.split("/")[0]);
-    if (num >= 9) return "#2ecc71"; // Green
-    if (num >= 7) return "#3498db"; // Blue
-    if (num >= 5) return "#f1c40f"; // Yellow
-    return "#e74c3c"; // Red
+    if (num >= 9) return styles.green;
+    if (num >= 7) return styles.blue;
+    if (num >= 5) return styles.orange;
+    return styles.red;
   }
 
   return (
     <div className={styles.pageBackground}>
-      <div className={styles.contentArea}>
-        {/* Left side */}
-        <div className={styles.leftSide}>
-          {/* Show outputs only after scoring */}
-          {aiResult && (
-            <>
-              {/* Suggested Rewrite Box */}
-              <div className={styles.rewriteBox}>
-                <h3>✍️ Suggested Rewrite:</h3>
-                <p>{rewrite}</p>
-                <button onClick={handleCopy} className={styles.copyButton}>
-                  Copy Rewrite
-                </button>
+      <h1 className={styles.pageTitle}>Punchy AI 🥊</h1>
+
+      {aiResult && (
+        <div className={styles.resultsLayout}>
+          <div className={styles.copyArea}>
+            <div className={styles.card}>
+              <h3>📄 Your Original Message:</h3>
+              <div className={styles.originalDetails}>
+                {selectedPersona && `❤️ ${selectedPersona}`} |{" "}
+                {selectedLevel && `📝 ${selectedLevel}`} |{" "}
+                {selectedIndustry && `🖥️ ${selectedIndustry}`}
               </div>
-            </>
-          )}
-        </div>
-
-        {/* Right side */}
-        <div className={styles.rightSide}>
-          {aiResult && scores.map((item, index) => (
-            <div key={index} className={styles.scoreBox}>
-              <span className={styles.categoryText}>{item.category}</span>
-              <span
-                className={styles.scoreValue}
-                style={{ color: getScoreColor(item.score) }}
-              >
-                {item.score}
-              </span>
+              <div className={styles.originalText}>{userMessage}</div>
             </div>
-          ))}
-        </div>
-      </div>
 
-      {/* Bottom input bar */}
-      <div className={styles.bottomBar}>
+            <div className={styles.card}>
+              <h3>✍️ Suggested Rewrite:</h3>
+              <div className={styles.rewriteText}>{rewrite}</div>
+              <button onClick={handleCopy} className={styles.copyButton}>
+                Copy Rewrite
+              </button>
+            </div>
+          </div>
+
+          <div className={styles.scoreArea}>
+            {scores.map((item, index) => (
+              <div key={index} className={styles.scoreCard}>
+                <div className={styles.scoreCategory}>{item.category}</div>
+                <div className={`${styles.scoreValue} ${getScoreColor(item.score)}`}>
+                  {item.score}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Sticky Footer */}
+      <div className={styles.footerWrapper}>
         <textarea
-          className={styles.inputArea}
+          className={styles.inputBox}
           placeholder="Paste your headline, email, or pitch..."
           value={userMessage}
           onChange={(e) => setUserMessage(e.target.value)}
         />
-        <div className={styles.dropdownRow}>
+
+        <div className={styles.selectContainer}>
           <select
             value={selectedPersona}
             onChange={(e) => setSelectedPersona(e.target.value)}
@@ -176,42 +142,43 @@ Here is the message to evaluate:
             <option value="Finance/Procurement">Finance/Procurement</option>
             <option value="Executive Leadership">Executive Leadership</option>
           </select>
+
           <select
             value={selectedLevel}
             onChange={(e) => setSelectedLevel(e.target.value)}
           >
             <option value="">Target Level</option>
-            <option value="Individual Contributor">IC</option>
+            <option value="Individual Contributor">Individual Contributor</option>
             <option value="Manager">Manager</option>
             <option value="Director">Director</option>
-            <option value="VP">VP</option>
-            <option value="C-Suite">C-Suite</option>
+            <option value="Vice President">Vice President</option>
+            <option value="C-Suite Executive">C-Suite Executive</option>
           </select>
+
           <select
             value={selectedIndustry}
             onChange={(e) => setSelectedIndustry(e.target.value)}
           >
             <option value="">Target Industry</option>
             <option value="Cybersecurity">Cybersecurity</option>
-            <option value="Software">Software</option>
+            <option value="Software Development">Software Development</option>
             <option value="Automotive">Automotive</option>
+            <option value="Legal Services">Legal Services</option>
             <option value="Healthcare">Healthcare</option>
             <option value="Finance">Finance</option>
+            <option value="E-Commerce">E-Commerce</option>
+            <option value="Education">Education</option>
+            <option value="Hospitality">Hospitality</option>
+            <option value="Manufacturing">Manufacturing</option>
+            <option value="Retail">Retail</option>
           </select>
         </div>
 
-        <div className={styles.buttonRow}>
-          <button
-            onClick={handleSubmit}
-            disabled={isLoading}
-            className={styles.scoreButton}
-          >
+        <div className={styles.buttonContainer}>
+          <button onClick={handleSubmit} className={styles.scoreButton} disabled={isLoading}>
             {isLoading ? "Scoring..." : "Score My Message"}
           </button>
-          <button
-            onClick={handleReset}
-            className={styles.resetButton}
-          >
+          <button onClick={handleReset} className={styles.resetButton}>
             Reset
           </button>
         </div>
