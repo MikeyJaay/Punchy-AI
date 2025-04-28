@@ -78,8 +78,6 @@ Suggested Rewrite:
 
   return (
     <div className={styles.pageBackground}>
-      <h1 className={styles.pageTitle}>Punchy AI 🥊</h1>
-
       <div className={styles.contentWrapper}>
         {aiResult && (
           <div className={styles.resultsLayout}>
@@ -107,7 +105,11 @@ Suggested Rewrite:
               {scores.map((item, index) => (
                 <div key={index} className={styles.scoreCard}>
                   <div className={styles.scoreCategory}>{item.category}</div>
-                  <div className={`${styles.scoreValue} ${getScoreColor(item.score)}`}>
+                  <div
+                    className={`${styles.scoreValue} ${getScoreColor(
+                      item.score
+                    )}`}
+                  >
                     {item.score}
                   </div>
                 </div>
@@ -150,7 +152,9 @@ Suggested Rewrite:
             onChange={(e) => setSelectedLevel(e.target.value)}
           >
             <option value="">Target Level</option>
-            <option value="Individual Contributor">Individual Contributor</option>
+            <option value="Individual Contributor">
+              Individual Contributor
+            </option>
             <option value="Manager">Manager</option>
             <option value="Director">Director</option>
             <option value="Vice President">Vice President</option>
@@ -177,7 +181,11 @@ Suggested Rewrite:
         </div>
 
         <div className={styles.buttonContainer}>
-          <button onClick={handleSubmit} className={styles.scoreButton} disabled={isLoading}>
+          <button
+            onClick={handleSubmit}
+            className={styles.scoreButton}
+            disabled={isLoading}
+          >
             {isLoading ? "Scoring..." : "Score My Message"}
           </button>
           <button onClick={handleReset} className={styles.resetButton}>
