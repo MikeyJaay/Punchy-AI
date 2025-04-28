@@ -80,40 +80,42 @@ Suggested Rewrite:
     <div className={styles.pageBackground}>
       <h1 className={styles.pageTitle}>Punchy AI 🥊</h1>
 
-      {aiResult && (
-        <div className={styles.resultsLayout}>
-          <div className={styles.copyArea}>
-            <div className={styles.card}>
-              <h3>📄 Your Original Message:</h3>
-              <div className={styles.originalDetails}>
-                {selectedPersona && `❤️ ${selectedPersona}`} |{" "}
-                {selectedLevel && `📝 ${selectedLevel}`} |{" "}
-                {selectedIndustry && `🖥️ ${selectedIndustry}`}
-              </div>
-              <div className={styles.originalText}>{userMessage}</div>
-            </div>
-
-            <div className={styles.card}>
-              <h3>✍️ Suggested Rewrite:</h3>
-              <div className={styles.rewriteText}>{rewrite}</div>
-              <button onClick={handleCopy} className={styles.copyButton}>
-                Copy Rewrite
-              </button>
-            </div>
-          </div>
-
-          <div className={styles.scoreArea}>
-            {scores.map((item, index) => (
-              <div key={index} className={styles.scoreCard}>
-                <div className={styles.scoreCategory}>{item.category}</div>
-                <div className={`${styles.scoreValue} ${getScoreColor(item.score)}`}>
-                  {item.score}
+      <div className={styles.contentWrapper}>
+        {aiResult && (
+          <div className={styles.resultsLayout}>
+            <div className={styles.copyArea}>
+              <div className={styles.card}>
+                <h3>📄 Your Original Message:</h3>
+                <div className={styles.originalDetails}>
+                  {selectedPersona && `❤️ ${selectedPersona}`} |{" "}
+                  {selectedLevel && `📝 ${selectedLevel}`} |{" "}
+                  {selectedIndustry && `🖥️ ${selectedIndustry}`}
                 </div>
+                <div className={styles.originalText}>{userMessage}</div>
               </div>
-            ))}
+
+              <div className={styles.card}>
+                <h3>✍️ Suggested Rewrite:</h3>
+                <div className={styles.rewriteText}>{rewrite}</div>
+                <button onClick={handleCopy} className={styles.copyButton}>
+                  Copy Rewrite
+                </button>
+              </div>
+            </div>
+
+            <div className={styles.scoreArea}>
+              {scores.map((item, index) => (
+                <div key={index} className={styles.scoreCard}>
+                  <div className={styles.scoreCategory}>{item.category}</div>
+                  <div className={`${styles.scoreValue} ${getScoreColor(item.score)}`}>
+                    {item.score}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
 
       {/* Sticky Footer */}
       <div className={styles.footerWrapper}>
