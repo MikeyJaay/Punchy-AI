@@ -8,6 +8,9 @@ function InputPanel() {
   const [selectedLevel, setSelectedLevel] = useState("");
   const [aiResult, setAiResult] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  // box expansions
+  const [isOriginalExpanded, setIsOriginalExpanded] = useState(false);
+  const [isRewriteExpanded, setIsRewriteExpanded] = useState(false);
 
   const { scores, rewrite } = parseScores(aiResult);
 
@@ -82,40 +85,67 @@ Suggested Rewrite:
         {aiResult && (
           <div className={styles.resultsLayout}>
             <div className={styles.copyArea}>
-  <div className={`${styles.card} ${styles.fadeIn}`}>
-    <h3>📄 Your Original Message:</h3>
-    <div className={styles.originalDetails}>
-      {selectedPersona && `❤️ ${selectedPersona}`} |{" "}
-      {selectedLevel && `📝 ${selectedLevel}`} |{" "}
-      {selectedIndustry && `🖥️ ${selectedIndustry}`}
-    </div>
-    <div className={styles.originalText}>{userMessage}</div>
-  </div>
+              <div className={`${styles.card} ${styles.fadeIn}`}>
+                <h3>📄 Your Original Message:</h3>
+                <div className={styles.originalDetails}>
+                  {selectedPersona && `❤️ ${selectedPersona}`} |{" "}
+                  {selectedLevel && `📝 ${selectedLevel}`} |{" "}
+                  {selectedIndustry && `🖥️ ${selectedIndustry}`}
+                </div>
+                <div
+                  className={`${styles.originalText} ${
+                    isOriginalExpanded ? styles.expanded : ""
+                  }`}
+                >
+                  {userMessage}
+                </div>
+                <button
+                  onClick={() => setIsOriginalExpanded(!isOriginalExpanded)}
+                  className={styles.expandButton}
+                >
+                  {isOriginalExpanded ? "Collapse Box" : "Expand Box"}
+                </button>
+              </div>
 
-  <div className={`${styles.card} ${styles.fadeIn}`} style={{ animationDelay: "0.2s" }}>
-    <h3>✍️ Suggested Rewrite:</h3>
-    <div className={styles.rewriteText}>{rewrite}</div>
-    <button onClick={handleCopy} className={styles.copyButton}>
-      Copy Rewrite
-    </button>
-  </div>
-</div>
-
+              {/* ✍️ Suggested Rewrite (with Expand Button) */}
+              <div
+                className={`${styles.card} ${styles.fadeIn}`}
+                style={{ animationDelay: "0.2s" }}
+              >
+                <h3>✍️ Suggested Rewrite:</h3>
+                <div
+                  className={`${styles.rewriteText} ${
+                    isRewriteExpanded ? styles.expanded : ""
+                  }`}
+                >
+                  {rewrite}
+                </div>
+                <button
+                  onClick={() => setIsRewriteExpanded(!isRewriteExpanded)}
+                  className={styles.expandButton}
+                >
+                  {isRewriteExpanded ? "Collapse Box" : "Expand Box"}
+                </button>
+                <button onClick={handleCopy} className={styles.copyButton}>
+                  Copy Rewrite
+                </button>
+              </div>
+            </div>
 
             <div className={styles.scoreArea}>
-  {scores.map((item, index) => (
-    <div
-      key={index}
-      className={`${styles.scoreCard} ${styles.fadeIn}`}
-      style={{ animationDelay: `${index * 0.2}s` }}
-    >
-      <div className={styles.scoreCategory}>{item.category}</div>
-      <div
-        className={`${styles.scoreValue} ${getScoreColor(
-          item.score
-        )}`}
-      >
-        {item.score}
+              {scores.map((item, index) => (
+                <div
+                  key={index}
+                  className={`${styles.scoreCard} ${styles.fadeIn}`}
+                  style={{ animationDelay: `${index * 0.2}s` }}
+                >
+                  <div className={styles.scoreCategory}>{item.category}</div>
+                  <div
+                    className={`${styles.scoreValue} ${getScoreColor(
+                      item.score
+                    )}`}
+                  >
+                    {item.score}
                   </div>
                 </div>
               ))}
